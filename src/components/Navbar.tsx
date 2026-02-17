@@ -17,8 +17,8 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary/95 backdrop-blur-md border-b border-border/20">
       <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <a href="#home" className="text-xl font-display font-bold text-gradient-gold tracking-tight">
-          PRINT<span className="text-secondary-foreground">PRO</span>
+        <a href="#home" className="text-lg font-display font-bold text-gradient-gold tracking-tight">
+          UNIVERS <span className="text-secondary-foreground">DES GADGETS</span>
         </a>
 
         {/* Desktop */}
@@ -32,7 +32,7 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <a href="tel:+237600000000">
+          <a href="tel:+237697320490">
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-gold">
               <Phone className="w-4 h-4 mr-2" />
               Appelez-nous
@@ -69,7 +69,7 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <a href="tel:+237600000000">
+              <a href="tel:+237697320490">
                 <Button size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mt-2">
                   <Phone className="w-4 h-4 mr-2" />
                   Appelez-nous

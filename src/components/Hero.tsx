@@ -21,7 +21,7 @@ const Hero = () => {
           >
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2 mb-6">
               <Printer className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Douala, Bali — Cameroun</span>
+              <span className="text-sm font-medium text-primary">Douala — Cameroun</span>
             </div>
           </motion.div>
 
@@ -69,12 +69,11 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="mt-16 grid grid-cols-3 gap-8 max-w-md"
+            className="mt-16 grid grid-cols-2 gap-8 max-w-xs"
           >
             {[
-              { value: "10+", label: "Ans d'expérience" },
-              { value: "5K+", label: "Projets réalisés" },
-              { value: "100%", label: "Satisfaction" },
+              { value: "500+", label: "Projets réalisés" },
+              { value: "100%", label: "Satisfaction client" },
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="text-2xl md:text-3xl font-display font-bold text-primary">{stat.value}</div>

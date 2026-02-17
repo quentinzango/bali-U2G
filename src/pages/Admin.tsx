@@ -45,8 +45,8 @@ const Admin = () => {
     <div className="min-h-screen bg-background">
       <header className="bg-secondary border-b border-border sticky top-0 z-40">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-bold text-gradient-gold">
-            PRINT<span className="text-secondary-foreground">PRO</span>
+          <a href="/" className="text-lg font-display font-bold text-gradient-gold">
+            UNIVERS <span className="text-secondary-foreground">DES GADGETS</span>
             <span className="text-xs text-muted-foreground ml-2 font-body">Admin</span>
           </a>
           <Button variant="ghost" size="sm" onClick={signOut} className="text-secondary-foreground">

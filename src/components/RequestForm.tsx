@@ -30,7 +30,7 @@ const RequestForm = () => {
   };
 
   const buildMessage = () => {
-    return `Bonjour PrintPro! Je suis ${form.name}.\n\nService: ${form.service}\nDescription: ${form.description}\nTéléphone: ${form.phone}\nEmail: ${form.email}`;
+    return `Bonjour Univers des Gadgets! Je suis ${form.name}.\n\nService: ${form.service}\nDescription: ${form.description}\nTéléphone: ${form.phone}\nEmail: ${form.email}`;
   };
 
   const handleWhatsApp = () => {
@@ -39,7 +39,7 @@ const RequestForm = () => {
       return;
     }
     const msg = encodeURIComponent(buildMessage());
-    window.open(`https://wa.me/237600000000?text=${msg}`, "_blank");
+    window.open(`https://wa.me/237697320490?text=${msg}`, "_blank");
   };
 
   const handleEmail = () => {
@@ -49,7 +49,7 @@ const RequestForm = () => {
     }
     const subject = encodeURIComponent(`Demande de service: ${form.service}`);
     const body = encodeURIComponent(buildMessage());
-    window.open(`mailto:contact@printpro-douala.com?subject=${subject}&body=${body}`, "_self");
+    window.open(`mailto:contact@universdegadgets.com?subject=${subject}&body=${body}`, "_self");
   };
 
   return (
@@ -71,9 +71,9 @@ const RequestForm = () => {
               Vous pouvez aussi nous contacter directement via WhatsApp.
             </p>
             <div className="space-y-4 text-secondary-foreground/60 text-sm">
-              <p>📍 Bali, Douala — Cameroun</p>
-              <p>📞 +237 6XX XXX XXX</p>
-              <p>✉️ contact@printpro-douala.com</p>
+              <p>📍 2MRV+6V6, Douala — Cameroun</p>
+              <p>📞 +237 697 320 490</p>
+              <p>💬 WhatsApp: 697 320 490</p>
             </div>
           </motion.div>
 

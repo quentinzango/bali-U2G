@@ -57,7 +57,7 @@ const Auth = () => {
       <Card className="w-full max-w-md bg-card border-border">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-display text-gradient-gold">
-            PRINTPRO
+            UNIVERS DES GADGETS
           </CardTitle>
           <CardDescription className="text-muted-foreground">
             {isLogin ? "Connectez-vous à votre espace admin" : "Créer un compte"}

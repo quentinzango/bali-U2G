@@ -58,7 +58,7 @@ const Hero = () => {
               </Button>
             </a>
             <a href="#services">
-              <Button size="lg" variant="outline" className="border-secondary-foreground/20 text-secondary-foreground hover:bg-secondary-foreground/10 text-base px-8">
+              <Button size="lg" variant="outline" className="border-primary/50 text-primary bg-primary/10 hover:bg-primary/20 text-base px-8">
                 Nos Services
               </Button>
             </a>

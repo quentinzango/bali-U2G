@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
+import { CONTACT } from "@/lib/constants";
 
 const MapSection = () => {
   return (
@@ -17,7 +18,7 @@ const MapSection = () => {
           </h2>
           <div className="flex items-center justify-center gap-2 mt-4 text-muted-foreground">
             <MapPin className="w-5 h-5 text-primary" />
-            <p>2MRV+6V6, Douala — Cameroun</p>
+            <p>{CONTACT.address}</p>
           </div>
         </motion.div>
 

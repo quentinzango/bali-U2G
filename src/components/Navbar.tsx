@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { CONTACT } from "@/lib/constants";
 
 const navLinks = [
   { label: "Accueil", href: "#home" },
@@ -17,8 +18,9 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary/95 backdrop-blur-md border-b border-border/20">
       <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <a href="#home" className="text-lg font-display font-bold text-gradient-gold tracking-tight">
-          UNIVERS <span className="text-secondary-foreground">DES GADGETS</span>
+        <a href="#home" className="flex items-center gap-3 text-lg font-display font-bold tracking-tight">
+          <img src="/logo.png" alt="Univers des Gadgets" className="h-9 md:h-10 w-auto object-contain" />
+          <span className="text-gradient-gold">UNIVERS <span className="text-secondary-foreground">DES GADGETS</span></span>
         </a>
 
         {/* Desktop */}
@@ -32,7 +34,7 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <a href="tel:+237697320490">
+          <a href={`tel:${CONTACT.phoneTel}`}>
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-gold">
               <Phone className="w-4 h-4 mr-2" />
               Appelez-nous
@@ -69,7 +71,7 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <a href="tel:+237697320490">
+              <a href={`tel:${CONTACT.phoneTel}`}>
                 <Button size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mt-2">
                   <Phone className="w-4 h-4 mr-2" />
                   Appelez-nous

@@ -1,4 +1,5 @@
 import { Phone, MapPin } from "lucide-react";
+import { CONTACT } from "@/lib/constants";
 
 const Footer = () => {
   return (
@@ -34,11 +35,11 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-secondary-foreground/60">
               <div className="flex items-center gap-3">
                 <MapPin className="w-4 h-4 text-primary shrink-0" />
-                <span>2MRV+6V6, Douala — Cameroun</span>
+                <span>{CONTACT.address}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
-                <span>+237 697 320 490</span>
+                <a href={`tel:${CONTACT.phoneTel}`} className="hover:text-primary transition-colors">{CONTACT.phoneDisplay}</a>
               </div>
             </div>
           </div>

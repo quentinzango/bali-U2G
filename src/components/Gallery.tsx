@@ -22,10 +22,19 @@ const Gallery = () => {
   const [file, setFile] = useState<File | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
-  const { data: photos, isLoading } = useQuery({
+  const { data: photos, isLoading: photosLoading } = useQuery({
     queryKey: ["gallery-photos"],
     queryFn: async () => {
       const { data, error } = await supabase.from("photos").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: videos, isLoading: videosLoading } = useQuery({
+    queryKey: ["gallery-videos"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("videos").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -153,52 +162,98 @@ const Gallery = () => {
           ) : null}
         </div>
 
-        {isLoading ? (
+        {photosLoading ? (
           <p className="text-center text-muted-foreground">Chargement...</p>
-        ) : !photos?.length ? (
-          <p className="text-center text-secondary-foreground/60">Aucune photo pour le moment.</p>
+        ) : !photos?.length && !videos?.length ? (
+          <p className="text-center text-secondary-foreground/60">Aucun contenu pour le moment.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {photos.map((photo, i) => (
-              <motion.div
-                key={photo.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="group relative overflow-hidden rounded-lg shadow-elegant bg-card cursor-pointer"
-                onClick={() => setSelectedPhoto(photo.image_url)}
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={photo.image_url}
-                    alt={photo.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                  />
+          <>
+            {photos?.length ? (
+              <>
+                <h3 className="text-xl font-display font-semibold text-secondary-foreground mb-6">Photos</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                  {photos.map((photo, i) => (
+                    <motion.div
+                      key={photo.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="group relative overflow-hidden rounded-lg shadow-elegant bg-card cursor-pointer"
+                      onClick={() => setSelectedPhoto(photo.image_url)}
+                    >
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <img
+                          src={photo.image_url}
+                          alt={photo.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-display font-semibold text-card-foreground">{photo.title}</h3>
+                        {photo.description && <p className="text-sm text-muted-foreground mt-1">{photo.description}</p>}
+                        {photo.service_category && (
+                          <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                            {photo.service_category}
+                          </span>
+                        )}
+                      </div>
+                      {isAdmin && (
+                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button size="icon" variant="secondary" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); openEdit(photo); }}>
+                            <Pencil className="w-3.5 h-3.5" />
+                          </Button>
+                          <Button size="icon" variant="destructive" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(photo.id); }}>
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-display font-semibold text-card-foreground">{photo.title}</h3>
-                  {photo.description && <p className="text-sm text-muted-foreground mt-1">{photo.description}</p>}
-                  {photo.service_category && (
-                    <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                      {photo.service_category}
-                    </span>
-                  )}
+              </>
+            ) : null}
+
+            {videos?.length ? (
+              <>
+                <h3 className="text-xl font-display font-semibold text-secondary-foreground mb-6">Vidéos</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {videos.map((video, i) => (
+                    <motion.div
+                      key={video.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="group relative overflow-hidden rounded-lg shadow-elegant bg-card"
+                    >
+                      <div className="aspect-video overflow-hidden bg-muted">
+                        <video
+                          src={video.video_url}
+                          poster={video.thumbnail_url || undefined}
+                          controls
+                          className="w-full h-full object-cover"
+                          preload="metadata"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-display font-semibold text-card-foreground">{video.title}</h3>
+                        {video.description && <p className="text-sm text-muted-foreground mt-1">{video.description}</p>}
+                        {video.service_category && (
+                          <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                            {video.service_category}
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-                {isAdmin && (
-                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button size="icon" variant="secondary" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); openEdit(photo); }}>
-                      <Pencil className="w-3.5 h-3.5" />
-                    </Button>
-                    <Button size="icon" variant="destructive" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(photo.id); }}>
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
+              </>
+            ) : videosLoading ? (
+              <p className="text-center text-muted-foreground mt-8">Chargement des vidéos...</p>
+            ) : null}
+          </>
         )}
 
         {/* Lightbox */}

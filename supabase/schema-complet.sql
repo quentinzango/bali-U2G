@@ -1,5 +1,11 @@
+-- =============================================================================
+-- DOUALA PRINT HUB / UNIVERS DES GADGETS — Schéma Supabase complet
+-- =============================================================================
+-- À exécuter dans l’éditeur SQL de ton projet Supabase (Dashboard > SQL Editor).
+-- Une seule exécution suffit. Ensuite, crée ton premier admin (voir en bas du fichier).
+-- =============================================================================
 
--- Roles enum and user_roles table
+-- ----- Rôles et table user_roles -----
 CREATE TYPE public.app_role AS ENUM ('admin', 'user');
 
 CREATE TABLE public.user_roles (
@@ -23,7 +29,7 @@ AS $$
   )
 $$;
 
--- Profiles table
+-- ----- Profils -----
 CREATE TABLE public.profiles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL UNIQUE,
@@ -36,7 +42,7 @@ CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = user_id);
 
--- Auto-create profile on signup
+-- Création automatique du profil à l’inscription
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -54,7 +60,7 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Photos table
+-- ----- Photos -----
 CREATE TABLE public.photos (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -71,7 +77,7 @@ CREATE POLICY "Admins can insert photos" ON public.photos FOR INSERT WITH CHECK 
 CREATE POLICY "Admins can update photos" ON public.photos FOR UPDATE USING (public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can delete photos" ON public.photos FOR DELETE USING (public.has_role(auth.uid(), 'admin'));
 
--- Videos table
+-- ----- Vidéos -----
 CREATE TABLE public.videos (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -89,7 +95,7 @@ CREATE POLICY "Admins can insert videos" ON public.videos FOR INSERT WITH CHECK 
 CREATE POLICY "Admins can update videos" ON public.videos FOR UPDATE USING (public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can delete videos" ON public.videos FOR DELETE USING (public.has_role(auth.uid(), 'admin'));
 
--- Services table (admin-managed)
+-- ----- Services (admin) -----
 CREATE TABLE public.services (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -102,24 +108,26 @@ CREATE TABLE public.services (
 );
 ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Anyone can view active services" ON public.services FOR SELECT USING (true);
+-- Public : uniquement les services actifs ; admins : tous
+CREATE POLICY "Public views active services" ON public.services FOR SELECT USING (is_active = true OR public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can insert services" ON public.services FOR INSERT WITH CHECK (public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can update services" ON public.services FOR UPDATE USING (public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can delete services" ON public.services FOR DELETE USING (public.has_role(auth.uid(), 'admin'));
 
--- RLS for user_roles
+-- ----- RLS user_roles -----
 CREATE POLICY "Users can view own roles" ON public.user_roles FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Admins can manage roles" ON public.user_roles FOR ALL USING (public.has_role(auth.uid(), 'admin'));
 
--- Storage bucket for media
-INSERT INTO storage.buckets (id, name, public) VALUES ('media', 'media', true);
+-- ----- Storage bucket media -----
+INSERT INTO storage.buckets (id, name, public) VALUES ('media', 'media', true)
+ON CONFLICT (id) DO NOTHING;
 
 CREATE POLICY "Anyone can view media" ON storage.objects FOR SELECT USING (bucket_id = 'media');
 CREATE POLICY "Admins can upload media" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'media' AND public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can update media" ON storage.objects FOR UPDATE USING (bucket_id = 'media' AND public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can delete media" ON storage.objects FOR DELETE USING (bucket_id = 'media' AND public.has_role(auth.uid(), 'admin'));
 
--- Updated_at trigger
+-- ----- Trigger updated_at -----
 CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -131,3 +139,17 @@ $$ LANGUAGE plpgsql SET search_path = public;
 CREATE TRIGGER update_photos_updated_at BEFORE UPDATE ON public.photos FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 CREATE TRIGGER update_videos_updated_at BEFORE UPDATE ON public.videos FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 CREATE TRIGGER update_services_updated_at BEFORE UPDATE ON public.services FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+
+-- =============================================================================
+-- CRÉER LE PREMIER ADMINISTRATEUR
+-- =============================================================================
+-- 1. Dans Supabase : Authentication > Users, crée un utilisateur (ou inscris-toi
+--    via ton app sur /auth).
+-- 2. Copie l’UUID de cet utilisateur (colonne "UID").
+-- 3. Exécute la requête suivante en remplaçant 'TON-USER-UUID' par cet UUID :
+--
+--    INSERT INTO public.user_roles (user_id, role)
+--    VALUES ('TON-USER-UUID', 'admin');
+--
+-- Après cela, ce compte aura accès à /admin (photos, vidéos, services).
+-- =============================================================================

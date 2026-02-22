@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { CONTACT } from "@/lib/constants";
 
 const serviceOptions = [
   "Impression Laser",
@@ -39,7 +40,7 @@ const RequestForm = () => {
       return;
     }
     const msg = encodeURIComponent(buildMessage());
-    window.open(`https://wa.me/237697320490?text=${msg}`, "_blank");
+    window.open(`https://wa.me/${CONTACT.whatsappNumber}?text=${msg}`, "_blank");
   };
 
   const handleEmail = () => {
@@ -49,7 +50,7 @@ const RequestForm = () => {
     }
     const subject = encodeURIComponent(`Demande de service: ${form.service}`);
     const body = encodeURIComponent(buildMessage());
-    window.open(`mailto:contact@universdegadgets.com?subject=${subject}&body=${body}`, "_self");
+    window.open(`mailto:${CONTACT.email}?subject=${subject}&body=${body}`, "_self");
   };
 
   return (
@@ -71,9 +72,9 @@ const RequestForm = () => {
               Vous pouvez aussi nous contacter directement via WhatsApp.
             </p>
             <div className="space-y-4 text-secondary-foreground/60 text-sm">
-              <p>📍 2MRV+6V6, Douala — Cameroun</p>
-              <p>📞 +237 697 320 490</p>
-              <p>💬 WhatsApp: 697 320 490</p>
+              <p>📍 {CONTACT.address}</p>
+              <p>📞 {CONTACT.phoneDisplay}</p>
+              <p>💬 WhatsApp: {CONTACT.whatsappDisplay}</p>
             </div>
           </motion.div>
 

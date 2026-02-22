@@ -1,73 +1,72 @@
-# Welcome to your Lovable project
+# Univers des Gadgets — Douala Print Hub
 
-## Project info
+Site vitrine et back-office pour **Univers des Gadgets** (impression et personnalisation à Douala, Cameroun).
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+- **Stack** : React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui, Supabase (Auth, Base, Storage).
+- **Fonctionnalités** : vitrine (services, galerie photos & vidéos, contact, carte), authentification, espace admin (CRUD photos, vidéos, services).
 
-## How can I edit this code?
+Le logo du site se trouve dans `public/logo.png` (affiché dans la navbar).
 
-There are several ways of editing your application.
+## Prérequis
 
-**Use Lovable**
+- Node.js 18+ et npm
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Installation
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+# Cloner (si besoin) puis entrer dans le projet
+cd douala-print-hub
 
-**Use your preferred IDE**
+# Installer les dépendances
+npm install
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Copier les variables d'environnement et les remplir avec ton projet Supabase
+cp .env.example .env
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Variables d'environnement
 
-Follow these steps:
+Crée un fichier `.env` à la racine (voir `.env.example`) avec :
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- `VITE_SUPABASE_URL` : URL du projet Supabase (Settings > API > Project URL).
+- `VITE_SUPABASE_PUBLISHABLE_KEY` : clé **anon public** (Settings > API > Project API keys > anon public).
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Ne commite jamais `.env`. Utilise la clé **anon**, pas la clé service.
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Configurer le backend Supabase (ton propre projet)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+1. Crée un projet sur [supabase.com](https://supabase.com) (ton compte).
+2. Dans le **SQL Editor**, exécute le script complet :
+   - Fichier : `supabase/schema-complet.sql`
+3. Crée ton premier admin :
+   - Authentication > Users : crée un utilisateur (ou inscris-toi via l’app sur `/auth`).
+   - Copie son **UID**.
+   - Dans le SQL Editor :
+     ```sql
+     INSERT INTO public.user_roles (user_id, role)
+     VALUES ('COLLE-ICI-L-UID', 'admin');
+     ```
+4. Dans l’app, renseigne `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` dans `.env`.
+
+## Lancer le projet
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Ouvre [http://localhost:8080](http://localhost:8080).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Build** : `npm run build`
+- **Preview** : `npm run preview`
+- **Tests** : `npm run test`
+- **Lint** : `npm run lint`
 
-**Use GitHub Codespaces**
+## Structure utile
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- `src/pages/` : Index, Auth, Admin, NotFound
+- `src/components/` : Navbar, Hero, Services, Gallery, RequestForm, MapSection, Footer
+- `src/components/admin/` : AdminPhotos, AdminVideos, AdminServices
+- `src/integrations/supabase/` : client et types Supabase
+- `src/hooks/useAuth.tsx` : session et rôle admin
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Ce projet est indépendant de Lovable ; tu en as le contrôle total.

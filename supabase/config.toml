@@ -1,1 +1,2 @@
-project_id = "tlacpsmscablbhmlqolx"
+# ID de ton projet Supabase (Dashboard > Settings > General > Reference ID)
+project_id = "ton-project-id"

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, Navigation2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/constants";
 
 const MapSection = () => {
@@ -19,6 +20,34 @@ const MapSection = () => {
           <div className="flex items-center justify-center gap-2 mt-4 text-muted-foreground">
             <MapPin className="w-5 h-5 text-primary" />
             <p>{CONTACT.address}</p>
+          </div>
+          <div className="mt-6 flex justify-center">
+            <Button
+              onClick={() => {
+                if (!navigator.geolocation) {
+                  const url =
+                    "https://www.google.com/maps/dir/?api=1&destination=4.04053,9.69466";
+                  window.open(url, "_blank");
+                  return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const url = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=4.04053,9.69466`;
+                    window.open(url, "_blank");
+                  },
+                  () => {
+                    const url =
+                      "https://www.google.com/maps/dir/?api=1&destination=4.04053,9.69466";
+                    window.open(url, "_blank");
+                  },
+                );
+              }}
+            >
+              <Navigation2 className="w-4 h-4" />
+              <span>Itinéraire</span>
+            </Button>
           </div>
         </motion.div>
 

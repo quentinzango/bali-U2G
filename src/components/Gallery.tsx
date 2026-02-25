@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 const Gallery = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -118,48 +116,9 @@ const Gallery = () => {
 
         {/* Admin controls */}
         <div className="flex justify-end gap-2 mb-6">
-          {isAdmin ? (
-            <>
-              <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); setOpen(v); }}>
-                <DialogTrigger asChild>
-                  <Button size="sm"><Plus className="w-4 h-4 mr-2" /> Ajouter</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{editId ? "Modifier la photo" : "Ajouter une photo"}</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={(e) => { e.preventDefault(); saveMutation.mutate(); }} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Titre</Label>
-                      <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Catégorie</Label>
-                      <Input value={form.service_category} onChange={(e) => setForm({ ...form, service_category: e.target.value })} placeholder="Ex: laser, sérigraphie..." />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Image {editId ? "(optionnel)" : ""}</Label>
-                      <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} required={!editId} />
-                    </div>
-                    <Button type="submit" className="w-full" disabled={saveMutation.isPending}>
-                      {saveMutation.isPending ? "Enregistrement..." : "Enregistrer"}
-                    </Button>
-                  </form>
-                </DialogContent>
-              </Dialog>
-              <Button variant="ghost" size="sm" onClick={signOut}>
-                <LogOut className="w-4 h-4 mr-2" /> Déconnexion
-              </Button>
-            </>
-          ) : !user ? (
-            <Button variant="outline" size="sm" onClick={() => navigate("/auth")}>
-              <LogIn className="w-4 h-4 mr-2" /> Admin
-            </Button>
-          ) : null}
+          <Button variant="outline" size="sm" onClick={() => navigate("/auth")}>
+            <LogIn className="w-4 h-4 mr-2" /> Admin
+          </Button>
         </div>
 
         {photosLoading ? (
@@ -199,16 +158,6 @@ const Gallery = () => {
                           </span>
                         )}
                       </div>
-                      {isAdmin && (
-                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button size="icon" variant="secondary" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); openEdit(photo); }}>
-                            <Pencil className="w-3.5 h-3.5" />
-                          </Button>
-                          <Button size="icon" variant="destructive" className="h-8 w-8" onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(photo.id); }}>
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </Button>
-                        </div>
-                      )}
                     </motion.div>
                   ))}
                 </div>

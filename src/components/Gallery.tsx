@@ -17,7 +17,7 @@ const Gallery = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", service_category: "", category_id: "" });
+  const [form, setForm] = useState({ title: "", description: "", category_id: "" });
   const [file, setFile] = useState<File | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -118,14 +118,18 @@ const Gallery = () => {
   });
 
   const resetForm = () => {
-    setForm({ title: "", description: "", service_category: "" });
+    setForm({ title: "", description: "", category_id: "" });
     setFile(null);
     setEditId(null);
     setOpen(false);
   };
 
   const openEdit = (photo: any) => {
-    setForm({ title: photo.title, description: photo.description || "", service_category: photo.service_category || "" });
+    setForm({ 
+      title: photo.title, 
+      description: photo.description || "", 
+      category_id: photo.category_id || ""
+    });
     setEditId(photo.id);
     setOpen(true);
   };
@@ -208,11 +212,6 @@ const Gallery = () => {
                             {photo.categories.name}
                           </span>
                         )}
-                        {photo.service_category && (
-                          <span className="inline-block mt-2 text-xs bg-secondary/10 text-secondary-foreground px-2 py-1 rounded-full ml-2">
-                            {photo.service_category}
-                          </span>
-                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -248,11 +247,6 @@ const Gallery = () => {
                         {video.categories?.name && (
                           <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                             {video.categories.name}
-                          </span>
-                        )}
-                        {video.service_category && (
-                          <span className="inline-block mt-2 text-xs bg-secondary/10 text-secondary-foreground px-2 py-1 rounded-full ml-2">
-                            {video.service_category}
                           </span>
                         )}
                       </div>

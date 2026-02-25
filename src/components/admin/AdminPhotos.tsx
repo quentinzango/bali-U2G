@@ -15,7 +15,7 @@ const AdminPhotos = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", service_category: "", category_id: "" });
+  const [form, setForm] = useState({ title: "", description: "", category_id: "" });
   const [file, setFile] = useState<File | null>(null);
 
   const { data: categories } = useQuery({
@@ -93,7 +93,7 @@ const AdminPhotos = () => {
   });
 
   const resetForm = () => {
-    setForm({ title: "", description: "", service_category: "", category_id: "" });
+    setForm({ title: "", description: "", category_id: "" });
     setFile(null);
     setEditId(null);
     setOpen(false);
@@ -103,7 +103,6 @@ const AdminPhotos = () => {
     setForm({ 
       title: photo.title, 
       description: photo.description || "", 
-      service_category: photo.service_category || "",
       category_id: photo.category_id || ""
     });
     setEditId(photo.id);
@@ -153,10 +152,6 @@ const AdminPhotos = () => {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Catégorie (ancien champ)</Label>
-                <Input value={form.service_category} onChange={(e) => setForm({ ...form, service_category: e.target.value })} placeholder="Ex: laser, sérigraphie..." />
-              </div>
-              <div className="space-y-2">
                 <Label>Image {editId ? "(optionnel)" : ""}</Label>
                 <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} required={!editId} />
               </div>
@@ -184,9 +179,6 @@ const AdminPhotos = () => {
                   <p className="font-semibold text-sm text-card-foreground">{photo.title}</p>
                   {photo.categories?.name && (
                     <p className="text-xs text-muted-foreground">Catégorie: {photo.categories.name}</p>
-                  )}
-                  {photo.service_category && (
-                    <p className="text-xs text-muted-foreground">Service: {photo.service_category}</p>
                   )}
                 </div>
                 <div className="flex gap-1">

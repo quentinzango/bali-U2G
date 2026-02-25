@@ -15,7 +15,7 @@ const AdminVideos = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", service_category: "", category_id: "" });
+  const [form, setForm] = useState({ title: "", description: "", category_id: "" });
   const [file, setFile] = useState<File | null>(null);
 
   const { data: categories } = useQuery({
@@ -91,7 +91,7 @@ const AdminVideos = () => {
   });
 
   const resetForm = () => {
-    setForm({ title: "", description: "", service_category: "", category_id: "" });
+    setForm({ title: "", description: "", category_id: "" });
     setFile(null);
     setEditId(null);
     setOpen(false);
@@ -101,7 +101,6 @@ const AdminVideos = () => {
     setForm({ 
       title: video.title, 
       description: video.description || "", 
-      service_category: video.service_category || "",
       category_id: video.category_id || ""
     });
     setEditId(video.id);
@@ -148,10 +147,6 @@ const AdminVideos = () => {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Catégorie (ancien champ)</Label>
-                <Input value={form.service_category} onChange={(e) => setForm({ ...form, service_category: e.target.value })} placeholder="Ex: laser, sérigraphie..." />
-              </div>
-              <div className="space-y-2">
                 <Label>Vidéo {editId ? "(optionnel)" : ""}</Label>
                 <Input type="file" accept="video/*" onChange={(e) => setFile(e.target.files?.[0] || null)} required={!editId} />
               </div>
@@ -174,23 +169,23 @@ const AdminVideos = () => {
               <div className="aspect-video">
                 <video src={video.video_url} className="w-full h-full object-cover" controls />
               </div>
-              <CardContent className="p-4 flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-sm text-card-foreground">{video.title}</p>
-                  {video.categories?.name && (
-                    <p className="text-xs text-muted-foreground">Catégorie: {video.categories.name}</p>
-                  )}
-                  {video.service_category && (
-                    <p className="text-xs text-muted-foreground">Service: {video.service_category}</p>
-                  )}
-                </div>
-                <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" onClick={() => openEdit(video)}>
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(video.id)}>
-                    <Trash2 className="w-4 h-4 text-destructive" />
-                  </Button>
+              <CardContent className="p-4">
+                <h3 className="font-display font-semibold text-card-foreground">{video.title}</h3>
+                {video.description && <p className="text-sm text-muted-foreground mt-1">{video.description}</p>}
+                {video.categories?.name && (
+                  <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                    {video.categories.name}
+                  </span>
+                )}
+              </CardContent>
+              <div className="flex gap-1">
+                <Button variant="ghost" size="icon" onClick={() => openEdit(video)}>
+                  <Pencil className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(video.id)}>
+                  <Trash2 className="w-4 h-4 text-destructive" />
+                </Button>
+              </div>
                 </div>
               </CardContent>
             </Card>

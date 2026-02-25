@@ -5,10 +5,10 @@ import heroBg from "@/assets/hero-printing.jpg";
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden" aria-label="Section principale - Services d'impression à Douala">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="Atelier d'impression professionnel" className="w-full h-full object-cover" />
+        <img src={heroBg} alt="Atelier d'impression professionnel avec machines laser et équipements" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-secondary/85" />
       </div>
 
@@ -28,40 +28,39 @@ const Hero = () => {
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-secondary-foreground leading-tight mb-6"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6"
           >
-            Votre Vision,{" "}
-            <span className="text-gradient-gold">Notre Impression</span>
+            <span className="text-gradient-gold">Univers</span> des{" "}
+            <span className="text-secondary-foreground">Gadgets</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="text-lg md:text-xl text-secondary-foreground/70 mb-8 max-w-xl"
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="text-xl md:text-2xl text-secondary-foreground/80 mb-8"
           >
-            Impression laser, personnalisation d'objets, bâches, roll-up et sérigraphie. 
-            Des solutions professionnelles pour tous vos projets.
+            Impression laser, gravure et personnalisation d'objets à Douala
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.45 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <a href="#contact">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-gold text-base px-8">
+            <Button size="lg" className="group" asChild>
+              <a href="#services" className="flex items-center justify-center">
+                Découvrir nos services
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <a href="#contact" className="flex items-center justify-center">
                 Demander un devis
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </a>
-            <a href="#services">
-              <Button size="lg" variant="outline" className="border-primary/50 text-primary bg-primary/10 hover:bg-primary/20 text-base px-8">
-                Nos Services
-              </Button>
-            </a>
+              </a>
+            </Button>
           </motion.div>
 
           {/* Stats */}

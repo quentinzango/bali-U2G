@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2, Pencil } from "lucide-react";
 
@@ -14,13 +15,30 @@ const AdminPhotos = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", service_category: "" });
+  const [form, setForm] = useState({ title: "", description: "", service_category: "", category_id: "" });
   const [file, setFile] = useState<File | null>(null);
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const { data: photos, isLoading } = useQuery({
     queryKey: ["admin-photos"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("photos").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("photos")
+        .select("*, categories(id, name)")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -75,14 +93,19 @@ const AdminPhotos = () => {
   });
 
   const resetForm = () => {
-    setForm({ title: "", description: "", service_category: "" });
+    setForm({ title: "", description: "", service_category: "", category_id: "" });
     setFile(null);
     setEditId(null);
     setOpen(false);
   };
 
   const openEdit = (photo: any) => {
-    setForm({ title: photo.title, description: photo.description || "", service_category: photo.service_category || "" });
+    setForm({ 
+      title: photo.title, 
+      description: photo.description || "", 
+      service_category: photo.service_category || "",
+      category_id: photo.category_id || ""
+    });
     setEditId(photo.id);
     setOpen(true);
   };
@@ -116,6 +139,21 @@ const AdminPhotos = () => {
               </div>
               <div className="space-y-2">
                 <Label>Catégorie</Label>
+                <Select value={form.category_id} onValueChange={(value) => setForm({ ...form, category_id: value })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner une catégorie" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories?.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Catégorie (ancien champ)</Label>
                 <Input value={form.service_category} onChange={(e) => setForm({ ...form, service_category: e.target.value })} placeholder="Ex: laser, sérigraphie..." />
               </div>
               <div className="space-y-2">
@@ -144,7 +182,12 @@ const AdminPhotos = () => {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="font-semibold text-sm text-card-foreground">{photo.title}</p>
-                  {photo.service_category && <p className="text-xs text-muted-foreground">{photo.service_category}</p>}
+                  {photo.categories?.name && (
+                    <p className="text-xs text-muted-foreground">Catégorie: {photo.categories.name}</p>
+                  )}
+                  {photo.service_category && (
+                    <p className="text-xs text-muted-foreground">Service: {photo.service_category}</p>
+                  )}
                 </div>
                 <div className="flex gap-1">
                   <Button variant="ghost" size="icon" onClick={() => openEdit(photo)}>

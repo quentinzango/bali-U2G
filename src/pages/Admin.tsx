@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { LogOut, Image, Video, Settings } from "lucide-react";
+import { LogOut, Image, Video, Settings, Folder } from "lucide-react";
 import AdminPhotos from "@/components/admin/AdminPhotos";
 import AdminVideos from "@/components/admin/AdminVideos";
 import AdminServices from "@/components/admin/AdminServices";
+import AdminCategories from "@/components/admin/AdminCategories";
 
 const Admin = () => {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -57,12 +58,15 @@ const Admin = () => {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="photos" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 max-w-md">
+          <TabsList className="grid w-full grid-cols-4 max-w-2xl">
             <TabsTrigger value="photos" className="gap-2">
               <Image className="w-4 h-4" /> Photos
             </TabsTrigger>
             <TabsTrigger value="videos" className="gap-2">
               <Video className="w-4 h-4" /> Vidéos
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="gap-2">
+              <Folder className="w-4 h-4" /> Catégories
             </TabsTrigger>
             <TabsTrigger value="services" className="gap-2">
               <Settings className="w-4 h-4" /> Services
@@ -74,6 +78,9 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="videos">
             <AdminVideos />
+          </TabsContent>
+          <TabsContent value="categories">
+            <AdminCategories />
           </TabsContent>
           <TabsContent value="services">
             <AdminServices />

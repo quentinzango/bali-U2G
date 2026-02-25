@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2, Pencil, LogIn, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -16,23 +17,56 @@ const Gallery = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", service_category: "" });
+  const [form, setForm] = useState({ title: "", description: "", service_category: "", category_id: "" });
   const [file, setFile] = useState<File | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const { data: photos, isLoading: photosLoading } = useQuery({
-    queryKey: ["gallery-photos"],
+    queryKey: ["gallery-photos", selectedCategory],
     queryFn: async () => {
-      const { data, error } = await supabase.from("photos").select("*").order("created_at", { ascending: false });
+      let query = supabase
+        .from("photos")
+        .select("*, categories(id, name)")
+        .order("created_at", { ascending: false });
+      
+      if (selectedCategory !== "all") {
+        query = query.eq("category_id", selectedCategory);
+      }
+      
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },
   });
 
   const { data: videos, isLoading: videosLoading } = useQuery({
-    queryKey: ["gallery-videos"],
+    queryKey: ["gallery-videos", selectedCategory],
     queryFn: async () => {
-      const { data, error } = await supabase.from("videos").select("*").order("created_at", { ascending: false });
+      let query = supabase
+        .from("videos")
+        .select("*, categories(id, name)")
+        .order("created_at", { ascending: false });
+      
+      if (selectedCategory !== "all") {
+        query = query.eq("category_id", selectedCategory);
+      }
+      
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },
@@ -114,6 +148,23 @@ const Gallery = () => {
           </p>
         </motion.div>
 
+        {/* Category filter */}
+        <div className="flex justify-center mb-8">
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-64">
+              <SelectValue placeholder="Filtrer par catégorie" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes les catégories</SelectItem>
+              {categories?.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         {/* Admin controls */}
         <div className="flex justify-end gap-2 mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate("/auth")}>
@@ -152,8 +203,13 @@ const Gallery = () => {
                       <div className="p-4">
                         <h3 className="font-display font-semibold text-card-foreground">{photo.title}</h3>
                         {photo.description && <p className="text-sm text-muted-foreground mt-1">{photo.description}</p>}
-                        {photo.service_category && (
+                        {photo.categories?.name && (
                           <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                            {photo.categories.name}
+                          </span>
+                        )}
+                        {photo.service_category && (
+                          <span className="inline-block mt-2 text-xs bg-secondary/10 text-secondary-foreground px-2 py-1 rounded-full ml-2">
                             {photo.service_category}
                           </span>
                         )}
@@ -189,8 +245,13 @@ const Gallery = () => {
                       <div className="p-4">
                         <h3 className="font-display font-semibold text-card-foreground">{video.title}</h3>
                         {video.description && <p className="text-sm text-muted-foreground mt-1">{video.description}</p>}
-                        {video.service_category && (
+                        {video.categories?.name && (
                           <span className="inline-block mt-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                            {video.categories.name}
+                          </span>
+                        )}
+                        {video.service_category && (
+                          <span className="inline-block mt-2 text-xs bg-secondary/10 text-secondary-foreground px-2 py-1 rounded-full ml-2">
                             {video.service_category}
                           </span>
                         )}

@@ -60,6 +60,23 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
+-- ----- Catégories -----
+CREATE TABLE public.categories (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL UNIQUE,
+  description TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can view active categories" ON public.categories FOR SELECT USING (is_active = true OR public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can insert categories" ON public.categories FOR INSERT WITH CHECK (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can update categories" ON public.categories FOR UPDATE USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can delete categories" ON public.categories FOR DELETE USING (public.has_role(auth.uid(), 'admin'));
+
 -- ----- Photos -----
 CREATE TABLE public.photos (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -67,6 +84,7 @@ CREATE TABLE public.photos (
   description TEXT,
   image_url TEXT NOT NULL,
   service_category TEXT,
+  category_id UUID REFERENCES public.categories(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -85,6 +103,7 @@ CREATE TABLE public.videos (
   video_url TEXT NOT NULL,
   thumbnail_url TEXT,
   service_category TEXT,
+  category_id UUID REFERENCES public.categories(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -136,6 +155,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SET search_path = public;
 
+CREATE TRIGGER update_categories_updated_at BEFORE UPDATE ON public.categories FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 CREATE TRIGGER update_photos_updated_at BEFORE UPDATE ON public.photos FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 CREATE TRIGGER update_videos_updated_at BEFORE UPDATE ON public.videos FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 CREATE TRIGGER update_services_updated_at BEFORE UPDATE ON public.services FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();

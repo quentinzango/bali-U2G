@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2, Pencil } from "lucide-react";
 
@@ -14,13 +15,30 @@ const AdminVideos = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", service_category: "" });
+  const [form, setForm] = useState({ title: "", description: "", service_category: "", category_id: "" });
   const [file, setFile] = useState<File | null>(null);
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .order("name", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const { data: videos, isLoading } = useQuery({
     queryKey: ["admin-videos"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("videos").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("videos")
+        .select("*, categories(id, name)")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -73,14 +91,19 @@ const AdminVideos = () => {
   });
 
   const resetForm = () => {
-    setForm({ title: "", description: "", service_category: "" });
+    setForm({ title: "", description: "", service_category: "", category_id: "" });
     setFile(null);
     setEditId(null);
     setOpen(false);
   };
 
   const openEdit = (video: any) => {
-    setForm({ title: video.title, description: video.description || "", service_category: video.service_category || "" });
+    setForm({ 
+      title: video.title, 
+      description: video.description || "", 
+      service_category: video.service_category || "",
+      category_id: video.category_id || ""
+    });
     setEditId(video.id);
     setOpen(true);
   };
@@ -96,6 +119,9 @@ const AdminVideos = () => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{editId ? "Modifier la vidéo" : "Ajouter une vidéo"}</DialogTitle>
+              <DialogDescription>
+                {editId ? "Modifiez les informations de cette vidéo." : "Ajoutez une nouvelle vidéo à la galerie."}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={(e) => { e.preventDefault(); saveMutation.mutate(); }} className="space-y-4">
               <div className="space-y-2">
@@ -108,6 +134,21 @@ const AdminVideos = () => {
               </div>
               <div className="space-y-2">
                 <Label>Catégorie</Label>
+                <Select value={form.category_id} onValueChange={(value) => setForm({ ...form, category_id: value })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner une catégorie" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories?.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Catégorie (ancien champ)</Label>
                 <Input value={form.service_category} onChange={(e) => setForm({ ...form, service_category: e.target.value })} placeholder="Ex: laser, sérigraphie..." />
               </div>
               <div className="space-y-2">
@@ -136,7 +177,12 @@ const AdminVideos = () => {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="font-semibold text-sm text-card-foreground">{video.title}</p>
-                  {video.service_category && <p className="text-xs text-muted-foreground">{video.service_category}</p>}
+                  {video.categories?.name && (
+                    <p className="text-xs text-muted-foreground">Catégorie: {video.categories.name}</p>
+                  )}
+                  {video.service_category && (
+                    <p className="text-xs text-muted-foreground">Service: {video.service_category}</p>
+                  )}
                 </div>
                 <div className="flex gap-1">
                   <Button variant="ghost" size="icon" onClick={() => openEdit(video)}>

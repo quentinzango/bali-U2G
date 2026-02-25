@@ -42,7 +42,7 @@ const Auth = () => {
             UNIVERS DES GADGETS
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            {isLogin ? "Connectez-vous à votre espace admin" : "Créer un compte"}
+            Connectez-vous à votre espace admin
           </CardDescription>
         </CardHeader>
         <CardContent>

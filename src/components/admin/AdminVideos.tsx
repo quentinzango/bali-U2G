@@ -186,8 +186,7 @@ const AdminVideos = () => {
                   <Trash2 className="w-4 h-4 text-destructive" />
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+            </Card>
           ))}
         </div>
       )}

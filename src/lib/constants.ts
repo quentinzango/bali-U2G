@@ -82,7 +82,7 @@ export const TESTIMONIALS = [
 
 // Image de fond pour la section Témoignages
 // À placer dans: public/images/temoignages-bg.jpg
-export const TESTIMONIALS_BG = "/images/temoignages-bg.jpg";
+export const TESTIMONIALS_BG = "/images/temoignages-bg.jpeg";
 
 // Image de fond pour la section Contact
 // À placer dans: public/images/contact-bg.jpg

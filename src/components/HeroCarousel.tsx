@@ -37,21 +37,21 @@ const HeroCarousel = () => {
               (e.target as HTMLImageElement).src = "/og-image.jpg";
             }}
           />
-          <div className="absolute inset-0 bg-secondary/80" />
+          <div className="absolute inset-0 bg-secondary/60" />
         </motion.div>
       </AnimatePresence>
 
       {/* Flèches de défilement */}
       <button
         onClick={() => setCurrent((prev) => (prev - 1 + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
         aria-label="Slide précédent"
       >
         <ChevronLeft className="w-8 h-8" />
       </button>
       <button
         onClick={() => setCurrent((prev) => (prev + 1) % CAROUSEL_SLIDES.length)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
         aria-label="Slide suivant"
       >
         <ChevronRight className="w-8 h-8" />
@@ -71,7 +71,7 @@ const HeroCarousel = () => {
                 <span className="text-gradient-gold">Univers</span> des{" "}
                 <span className="text-secondary-foreground">Gadgets</span>
               </h1>
-              <p className="text-xl md:text-2xl text-secondary-foreground/90 mb-8">
+              <p className="text-xl md:text-2xl text-secondary-foreground mb-8">
                 {CAROUSEL_SLIDES[current].message}
               </p>
               <Button size="lg" className="group" asChild>

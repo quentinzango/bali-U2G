@@ -86,7 +86,7 @@ const RequestForm = () => {
             (e.target as HTMLImageElement).src = "/og-image.jpg";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 via-secondary/50 to-secondary/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/40 via-secondary/30 to-secondary/40" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -122,15 +122,15 @@ const RequestForm = () => {
             transition={{ type: "spring", stiffness: 100 }}
             className="flex flex-col"
           >
-            <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-2xl h-full flex flex-col justify-center">
-              <p className="text-white/90 text-lg mb-8 leading-relaxed">
+            <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/30 shadow-2xl h-full flex flex-col justify-center">
+              <p className="text-white text-lg mb-8 leading-relaxed">
                 Vous pouvez aussi nous contacter directement via WhatsApp ou par email.
                 Notre équipe est à votre écoute pour concrétiser vos projets.
               </p>
               <div className="space-y-6">
                 <motion.div
                   whileHover={{ x: 8 }}
-                  className="flex items-center gap-4 text-white/90"
+                  className="flex items-center gap-4 text-white"
                 >
                   <div className="w-12 h-12 rounded-full bg-primary/30 flex items-center justify-center shrink-0">
                     <MapPin className="w-5 h-5 text-primary" />
@@ -144,7 +144,7 @@ const RequestForm = () => {
                   <div className="w-12 h-12 rounded-full bg-primary/30 flex items-center justify-center shrink-0">
                     <Phone className="w-5 h-5 text-primary" />
                   </div>
-                  <a href={`tel:${CONTACT.phoneTel}`} className="text-white/90 hover:text-primary transition-colors">
+                  <a href={`tel:${CONTACT.phoneTel}`} className="text-white hover:text-primary transition-colors">
                     {CONTACT.phoneDisplay}
                   </a>
                 </motion.div>
@@ -159,7 +159,7 @@ const RequestForm = () => {
                     href={`https://wa.me/${CONTACT.whatsappNumber}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/90 hover:text-primary transition-colors"
+                    className="text-white hover:text-primary transition-colors"
                   >
                     WhatsApp: {CONTACT.whatsappDisplay}
                   </a>

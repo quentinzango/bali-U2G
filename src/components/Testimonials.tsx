@@ -19,7 +19,7 @@ const Testimonials = () => {
             (e.target as HTMLImageElement).src = "/og-image.jpg";
           }}
         />
-        <div className="absolute inset-0 bg-secondary/90" />
+        <div className="absolute inset-0 bg-secondary/70" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -48,10 +48,10 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-background/10 backdrop-blur-sm rounded-lg p-6 border border-border/30 hover:border-primary/30 transition-colors group"
+              className="bg-background/20 backdrop-blur-sm rounded-lg p-6 border border-border/50 hover:border-primary/50 transition-colors group"
             >
-              <Quote className="w-10 h-10 text-primary/50 mb-4 group-hover:text-primary transition-colors" />
-              <p className="text-secondary-foreground/90 text-sm leading-relaxed mb-6 line-clamp-4">
+              <Quote className="w-10 h-10 text-primary/70 mb-4 group-hover:text-primary transition-colors" />
+              <p className="text-secondary-foreground text-sm leading-relaxed mb-6 line-clamp-4">
                 "{testimonial.comment}"
               </p>
               <div className="flex items-center gap-4">
@@ -67,7 +67,7 @@ const Testimonials = () => {
                   <p className="font-display font-semibold text-secondary-foreground">
                     {testimonial.name}
                   </p>
-                  <p className="text-xs text-secondary-foreground/60">{testimonial.role}</p>
+                  <p className="text-xs text-secondary-foreground/80">{testimonial.role}</p>
                 </div>
               </div>
             </motion.div>

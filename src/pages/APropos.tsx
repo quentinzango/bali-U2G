@@ -16,7 +16,7 @@ const APropos = () => {
             <img
               src={ABOUT_BG}
               alt="Univers des Gadgets - À propos"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center md:object-cover lg:object-cover"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "/og-image.jpg";
               }}

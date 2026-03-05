@@ -32,7 +32,7 @@ const HeroCarousel = () => {
           <img
             src={CAROUSEL_SLIDES[current].image}
             alt={`Slide ${current + 1} - ${CAROUSEL_SLIDES[current].message}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center md:object-cover lg:object-cover"
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/og-image.jpg";
             }}

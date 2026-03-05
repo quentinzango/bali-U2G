@@ -80,7 +80,7 @@ const RequestForm = () => {
         <img
           src={CONTACT_BG}
           alt=""
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center md:object-cover lg:object-cover"
           aria-hidden
           onError={(e) => {
             (e.target as HTMLImageElement).src = "/og-image.jpg";

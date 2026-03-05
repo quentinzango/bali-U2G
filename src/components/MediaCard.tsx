@@ -41,7 +41,7 @@ const MediaCard = ({ type, src, title, description, onPreview, className = "" }:
             <img
               src={src}
               alt={title}
-              className="w-full h-full object-cover object-center md:object-cover lg:object-cover"
+              className="w-full h-full object-cover object-center sm:object-center md:object-cover lg:object-cover"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
@@ -70,7 +70,7 @@ const MediaCard = ({ type, src, title, description, onPreview, className = "" }:
           <>
             <video
               src={src}
-              className="w-full h-full object-cover object-center md:object-cover lg:object-cover"
+              className="w-full h-full object-cover object-center sm:object-center md:object-cover lg:object-cover"
               preload="metadata"
               controls
               onClick={(e) => e.stopPropagation()}

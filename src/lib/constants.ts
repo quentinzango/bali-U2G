@@ -90,4 +90,4 @@ export const CONTACT_BG = "/images/contact-bg.jpg";
 
 // Image de fond pour la page À propos
 // À placer dans: public/images/a-propos-bg.jpg
-export const ABOUT_BG = "/images/a-propos-bg.jpg";
+export const ABOUT_BG = "/images/a-propos-bg.jpeg";

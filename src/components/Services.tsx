@@ -42,9 +42,6 @@ const Services = () => {
           <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mt-3">
             Nos Services
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            Cliquez sur un service pour découvrir nos réalisations.
-          </p>
         </motion.div>
 
         {isLoading ? (
@@ -76,7 +73,7 @@ const Services = () => {
                     </div>
                   </div>
                   <div className="p-6 rounded-b-2xl bg-card">
-                    <h3 className="text-lg font-display font-semibold text-card-foreground mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-lg font-display font-semibold text-gradient-gold mb-2 group-hover:text-primary transition-colors">
                       {service.title}
                     </h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">{service.description}</p>

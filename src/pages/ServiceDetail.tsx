@@ -127,7 +127,7 @@ const ServiceDetail = () => {
                   transition={{ delay: 0.1 }}
                   className="mb-16"
                 >
-                  <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
+                  <h2 className="text-2xl font-display font-semibold text-gradient-gold mb-6">
                     Photos
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -151,7 +151,7 @@ const ServiceDetail = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <h2 className="text-2xl font-display font-semibold text-foreground mb-6">
+                  <h2 className="text-2xl font-display font-semibold text-gradient-gold mb-6">
                     Vidéos
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -81,7 +81,7 @@ const Gallery = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
+        <div className="flex justify-center mb-8">
           <Select value={selectedService} onValueChange={setSelectedService}>
             <SelectTrigger className="w-64">
               <SelectValue placeholder="Filtrer par service" />
@@ -95,9 +95,6 @@ const Gallery = () => {
               ))}
             </SelectContent>
           </Select>
-          <p className="text-sm text-secondary-foreground/60">
-            Cliquez sur un service dans la section Services pour voir uniquement ses réalisations.
-          </p>
         </div>
 
         {photosLoading ? (
@@ -110,7 +107,7 @@ const Gallery = () => {
           <>
             {photos && photos.length > 0 && (
               <>
-                <h3 className="text-xl font-display font-semibold text-secondary-foreground mb-6">Photos</h3>
+                <h3 className="text-xl font-display font-semibold text-gradient-gold mb-6">Photos</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
                   {photos.map((photo) => (
                     <div key={photo.id}>
@@ -137,7 +134,7 @@ const Gallery = () => {
 
             {videos && videos.length > 0 && (
               <>
-                <h3 className="text-xl font-display font-semibold text-secondary-foreground mb-6">Vidéos</h3>
+                <h3 className="text-xl font-display font-semibold text-gradient-gold mb-6">Vidéos</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {videos.map((video) => (
                     <div key={video.id}>

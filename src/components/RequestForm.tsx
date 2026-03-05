@@ -86,7 +86,7 @@ const RequestForm = () => {
             (e.target as HTMLImageElement).src = "/og-image.jpg";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/95 via-secondary/90 to-secondary/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 via-secondary/50 to-secondary/60" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

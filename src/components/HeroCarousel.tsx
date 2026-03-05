@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CAROUSEL_SLIDES } from "@/lib/constants";
 
@@ -40,6 +40,22 @@ const HeroCarousel = () => {
           <div className="absolute inset-0 bg-secondary/80" />
         </motion.div>
       </AnimatePresence>
+
+      {/* Flèches de défilement */}
+      <button
+        onClick={() => setCurrent((prev) => (prev - 1 + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length)}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+        aria-label="Slide précédent"
+      >
+        <ChevronLeft className="w-8 h-8" />
+      </button>
+      <button
+        onClick={() => setCurrent((prev) => (prev + 1) % CAROUSEL_SLIDES.length)}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+        aria-label="Slide suivant"
+      >
+        <ChevronRight className="w-8 h-8" />
+      </button>
 
       <div className="container mx-auto px-4 relative z-10 pt-20">
         <div className="max-w-3xl">

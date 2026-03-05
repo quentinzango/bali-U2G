@@ -30,10 +30,10 @@ const MediaCard = ({ type, src, title, description, onPreview, className = "" }:
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`group relative alibaba-image-card rounded-lg bg-card border border-border/50 overflow-hidden shadow-md hover:shadow-xl hover:border-primary/30 transition-all duration-300 ${className}`}
+      className={`group relative alibaba-image-card rounded-xl overflow-hidden transition-all duration-300 bg-secondary/10 ${className}`}
     >
       <div
-        className={`relative overflow-hidden ${type === "photo" ? "aspect-[4/3] cursor-pointer" : "aspect-video"}`}
+        className={`relative overflow-hidden rounded-t-lg border-[6px] border-secondary/90 shadow-[inset_0_0_30px_rgba(0,0,0,0.2),0_2px_8px_rgba(0,0,0,0.15)] ${type === "photo" ? "aspect-[4/3] cursor-pointer" : "aspect-video"}`}
         onClick={type === "photo" ? onPreview : undefined}
       >
         {type === "photo" ? (
@@ -88,9 +88,9 @@ const MediaCard = ({ type, src, title, description, onPreview, className = "" }:
           </>
         )}
       </div>
-      <div className="p-4 flex items-center justify-between gap-2">
+      <div className="p-4 flex items-center justify-between gap-2 bg-card rounded-b-lg border-x-[6px] border-b-[6px] border-secondary/90">
         <div className="min-w-0 flex-1">
-          <h3 className="font-display font-semibold text-card-foreground line-clamp-1">{title}</h3>
+          <h3 className="font-display font-semibold text-gradient-gold line-clamp-1">{title}</h3>
           {description && (
             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{description}</p>
           )}

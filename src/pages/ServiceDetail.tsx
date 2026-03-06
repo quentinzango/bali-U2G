@@ -20,7 +20,7 @@ const ServiceDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("services")
-        .select("id, title, description")
+        .select("id, title, description, image_url")
         .eq("id", id)
         .single();
       if (error) throw error;
@@ -99,12 +99,24 @@ const ServiceDetail = () => {
             </Link>
           </Button>
 
-          {/* En-tête sans image du service */}
+          {/* En-tête avec image du service */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
+            {/* Image du service */}
+            {service.image_url && (
+              <div className="mb-8 rounded-2xl overflow-hidden shadow-xl">
+                <img
+                  src={service.image_url}
+                  alt={service.title}
+                  className="w-full h-auto max-h-96 object-cover object-center"
+                />
+              </div>
+            )}
+            
+            {/* Titre et description */}
             <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
               {service.title}
             </h1>

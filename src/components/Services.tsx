@@ -73,10 +73,9 @@ const Services = () => {
                     </div>
                   </div>
                   <div className="p-6 rounded-b-2xl bg-card">
-                    <h3 className="text-lg font-display font-semibold text-gradient-gold mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-lg font-display font-semibold text-gradient-gold group-hover:text-primary transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{service.description}</p>
                   </div>
                 </motion.div>
               </Link>

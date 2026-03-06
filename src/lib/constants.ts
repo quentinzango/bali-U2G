@@ -21,7 +21,7 @@ export const SOCIAL = {
 export const CAROUSEL_SLIDES = [
   {
     image: "/images/carousel-1.jpg",
-    message: "Univers des Gadgets — Votre partenaire d'impression à Douala",
+    message: "Univers des Gadgets — Votre partenaire d'impression",
     buttonText: "Découvrir nos services",
     buttonLink: "#services",
   },

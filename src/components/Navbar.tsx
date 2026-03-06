@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const navLinks = [
-  { label: "Accueil", path: "/", hash: "#home" },
   { label: "Galerie", path: "/galerie", hash: "#gallery" },
   { label: "Témoignages", path: "/temoignages", hash: "#temoignages" },
   { label: "À propos", path: "/a-propos" },
